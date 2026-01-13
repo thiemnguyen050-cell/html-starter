@@ -1,53 +1,38 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <title>Chuyển link Affiliate</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body style="font-family:Arial; text-align:center; padding:40px;">
-
-  <h1>🔗 Chuyển Link Affiliate</h1>
-  <p>Dán link sản phẩm Shopee vào bên dưới</p>
-
-  <input id="inputLink"
-         type="text"
-         placeholder="https://shopee.vn/..."
-         style="width:80%;padding:10px;font-size:16px">
-
-  <br><br>
-
-  <button onclick="convertLink()"
-          style="padding:12px 20px;font-size:16px;">
-    Chuyển sang link của tôi
-  </button>
-
-  <p id="result" style="margin-top:30px;word-break:break-all;"></p>
-
 <script>
 function convertLink() {
   const rawLink = document.getElementById("inputLink").value.trim();
+  const resultEl = document.getElementById("result");
+
   if (!rawLink) {
-    alert("Vui lòng nhập link");
+    alert("Vui lòng nhập link Shopee");
     return;
   }
 
-  const affId = "17365830436";
+  try {
+    // Encode link gốc
+    const encodedLink = encodeURIComponent(rawLink);
 
-  // Shopee Affiliate redirect (ví dụ phổ biến)
-  const affLink =
-    "https://shope.ee/redirect?affiliate_id=" +
-    affId +
-    "&url=" +
-    encodeURIComponent(rawLink);
+    // 👉 THAY affiliate_id của bạn vào đây
+    const affiliateId = "17365830436";
 
-  document.getElementById("result").innerHTML =
-    "✅ Link affiliate của bạn:<br><br>" +
-    "<a href='" + affLink + "' target='_blank'>" +
-    affLink +
-    "</a>";
+    const affiliateLink =
+      "https://shope.ee/?utm_campaign=" + affiliateId +
+      "&utm_medium=affiliates&utm_source=an_website&url=" +
+      encodedLink;
+
+    resultEl.innerHTML = `
+      <b>Link affiliate:</b><br>
+      <a href="${affiliateLink}" target="_blank">${affiliateLink}</a>
+      <br><br>
+      <button onclick="copyLink('${affiliateLink}')">📋 Copy link</button>
+    `;
+  } catch (e) {
+    resultEl.innerText = "Có lỗi xảy ra, vui lòng thử lại";
+  }
+}
+
+function copyLink(text) {
+  navigator.clipboard.writeText(text);
+  alert("Đã copy link!");
 }
 </script>
-
-</body>
-</html>
