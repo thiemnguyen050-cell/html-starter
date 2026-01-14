@@ -5,36 +5,37 @@
   <title>Chuyển Link Shopee Affiliate</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body style="font-family:Arial;text-align:center;padding:40px">
 
   <h2>🔗 Chuyển Link Shopee Affiliate</h2>
+  <p>Dán link Shopee gốc, hệ thống sẽ tự chuyển</p>
 
   <input
     id="inputLink"
     type="text"
-    placeholder="Dán link Shopee gốc (vn.shp.ee hoặc shopee.vn)"
+    placeholder="https://vn.shp.ee/..."
     style="width:90%;padding:12px;font-size:16px"
   >
 
   <br><br>
 
-  <button onclick="convertLink()" style="padding:12px 20px;font-size:16px">
-    Chuyển sang link Affiliate
+  <button onclick="startRedirect()" style="padding:12px 20px;font-size:16px">
+    Chuyển & Mở Shopee
   </button>
 
-  <p id="result" style="margin-top:30px;word-break:break-all"></p>
+  <p id="status" style="margin-top:30px;font-weight:bold"></p>
 
   <script>
-    function convertLink() {
+    function startRedirect() {
       const rawLink = document.getElementById("inputLink").value.trim();
-      const resultEl = document.getElementById("result");
+      const statusEl = document.getElementById("status");
 
       if (!rawLink) {
         alert("Vui lòng dán link Shopee gốc");
         return;
       }
 
-      // chặn link affiliate
       if (rawLink.includes("affiliate_id") || rawLink.includes("utm_")) {
         alert("Chỉ dán link Shopee GỐC");
         return;
@@ -49,19 +50,12 @@
         "&url=" +
         encodedLink;
 
-      resultEl.innerHTML = `
-        <b>Link affiliate (Shopee sẽ tự rút gọn khi mở):</b><br><br>
-        <a href="${affiliateLink}" target="_blank">${affiliateLink}</a>
-        <br><br>
-        <button onclick="copyLink('${affiliateLink}')">📋 Copy link</button>
-        <br><br>
-        <small>👉 Khi mở link này, Shopee sẽ tự sinh link s.shopee.vn</small>
-      `;
-    }
+      statusEl.innerText = "⏳ Đang chuyển hướng sang Shopee...";
 
-    function copyLink(text) {
-      navigator.clipboard.writeText(text);
-      alert("Đã copy link affiliate");
+      // ⏱ delay 1 giây rồi tự chuyển
+      setTimeout(() => {
+        window.location.href = affiliateLink;
+      }, 1000);
     }
   </script>
 
