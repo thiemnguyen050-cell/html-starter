@@ -1,38 +1,61 @@
-<script>
-function convertLink() {
-  const rawLink = document.getElementById("inputLink").value.trim();
-  const resultEl = document.getElementById("result");
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chuyển Link Affiliate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 
-  if (!rawLink) {
-    alert("Vui lòng nhập link Shopee");
-    return;
-  }
+<body style="font-family:Arial;text-align:center;padding:40px">
 
-  try {
-    // Encode link gốc
-    const encodedLink = encodeURIComponent(rawLink);
+  <h1>🔗 Chuyển Link Affiliate</h1>
+  <p>Dán link Shopee vào bên dưới</p>
 
-    // 👉 THAY affiliate_id của bạn vào đây
-    const affiliateId = "17365830436";
+  <input id="inputLink"
+    type="text"
+    placeholder="https://shopee.vn/..."
+    style="width:80%;padding:10px;font-size:16px">
 
-    const affiliateLink =
-      "https://shope.ee/?utm_campaign=" + affiliateId +
-      "&utm_medium=affiliates&utm_source=an_website&url=" +
-      encodedLink;
+  <br><br>
 
-    resultEl.innerHTML = `
-      <b>Link affiliate:</b><br>
-      <a href="${affiliateLink}" target="_blank">${affiliateLink}</a>
-      <br><br>
-      <button onclick="copyLink('${affiliateLink}')">📋 Copy link</button>
-    `;
-  } catch (e) {
-    resultEl.innerText = "Có lỗi xảy ra, vui lòng thử lại";
-  }
-}
+  <button onclick="convertLink()"
+    style="padding:12px 20px;font-size:16px">
+    Chuyển sang link của tôi
+  </button>
 
-function copyLink(text) {
-  navigator.clipboard.writeText(text);
-  alert("Đã copy link!");
-}
-</script>
+  <p id="result" style="margin-top:30px;word-break:break-all"></p>
+
+  <script>
+    function convertLink() {
+      const rawLink = document.getElementById("inputLink").value.trim();
+      const resultEl = document.getElementById("result");
+
+      if (!rawLink) {
+        alert("Vui lòng nhập link Shopee");
+        return;
+      }
+
+      const encodedLink = encodeURIComponent(rawLink);
+      const affiliateId = "17365830436";
+
+      const affiliateLink =
+        "https://shope.ee/?utm_campaign=" + affiliateId +
+        "&utm_medium=affiliates&utm_source=an_website&url=" +
+        encodedLink;
+
+      resultEl.innerHTML = `
+        <b>Link affiliate:</b><br>
+        <a href="${affiliateLink}" target="_blank">${affiliateLink}</a>
+        <br><br>
+        <button onclick="copyLink('${affiliateLink}')">📋 Copy link</button>
+      `;
+    }
+
+    function copyLink(text) {
+      navigator.clipboard.writeText(text);
+      alert("Đã copy link!");
+    }
+  </script>
+
+</body>
+</html>
