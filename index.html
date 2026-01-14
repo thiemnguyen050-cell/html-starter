@@ -1,61 +1,38 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <title>Chuyển Link Affiliate</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+<script>
+function convertLink() {
+  const rawLink = document.getElementById("inputLink").value.trim();
+  const resultEl = document.getElementById("result");
 
-<body style="font-family:Arial;text-align:center;padding:40px">
+  if (!rawLink) {
+    alert("Vui lòng nhập link Shopee gốc");
+    return;
+  }
 
-  <h1>🔗 Chuyển Link Affiliate</h1>
-  <p>Dán link Shopee vào bên dưới</p>
+  // Chặn link affiliate
+  if (rawLink.includes("affiliate_id") || rawLink.includes("utm_")) {
+    alert("Chỉ dán link Shopee GỐC (vn.shp.ee hoặc shopee.vn)");
+    return;
+  }
 
-  <input id="inputLink"
-    type="text"
-    placeholder="https://shopee.vn/..."
-    style="width:80%;padding:10px;font-size:16px">
+  const affiliateId = "17365830436";
+  const encodedLink = encodeURIComponent(rawLink);
 
-  <br><br>
+  const affiliateLink =
+    "https://shope.ee/redirect?affiliate_id=" +
+    affiliateId +
+    "&url=" +
+    encodedLink;
 
-  <button onclick="convertLink()"
-    style="padding:12px 20px;font-size:16px">
-    Chuyển sang link của tôi
-  </button>
+  resultEl.innerHTML = `
+    <b>Link affiliate Shopee (chuẩn):</b><br>
+    <a href="${affiliateLink}" target="_blank">${affiliateLink}</a>
+    <br><br>
+    <button onclick="copyLink('${affiliateLink}')">📋 Copy link</button>
+  `;
+}
 
-  <p id="result" style="margin-top:30px;word-break:break-all"></p>
-
-  <script>
-    function convertLink() {
-      const rawLink = document.getElementById("inputLink").value.trim();
-      const resultEl = document.getElementById("result");
-
-      if (!rawLink) {
-        alert("Vui lòng nhập link Shopee");
-        return;
-      }
-
-      const encodedLink = encodeURIComponent(rawLink);
-      const affiliateId = "17365830436";
-
-      const affiliateLink =
-        "https://shope.ee/?utm_campaign=" + affiliateId +
-        "&utm_medium=affiliates&utm_source=an_website&url=" +
-        encodedLink;
-
-      resultEl.innerHTML = `
-        <b>Link affiliate:</b><br>
-        <a href="${affiliateLink}" target="_blank">${affiliateLink}</a>
-        <br><br>
-        <button onclick="copyLink('${affiliateLink}')">📋 Copy link</button>
-      `;
-    }
-
-    function copyLink(text) {
-      navigator.clipboard.writeText(text);
-      alert("Đã copy link!");
-    }
-  </script>
-
-</body>
-</html>
+function copyLink(text) {
+  navigator.clipboard.writeText(text);
+  alert("Đã copy link!");
+}
+</script>
