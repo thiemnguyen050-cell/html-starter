@@ -2,62 +2,39 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Chuyển Link Shopee Affiliate</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-
-<body style="font-family:Arial;text-align:center;padding:40px">
-
-  <h2>🔗 Chuyển Link Shopee Affiliate</h2>
-  <p>Dán link Shopee gốc, hệ thống sẽ tự chuyển</p>
-
-  <input
-    id="inputLink"
-    type="text"
-    placeholder="https://vn.shp.ee/..."
-    style="width:90%;padding:12px;font-size:16px"
-  >
-
-  <br><br>
-
-  <button onclick="startRedirect()" style="padding:12px 20px;font-size:16px">
-    Chuyển & Mở Shopee
-  </button>
-
-  <p id="status" style="margin-top:30px;font-weight:bold"></p>
-
+  <title>Shopee Affiliate Redirect</title>
   <script>
-    function startRedirect() {
-      const rawLink = document.getElementById("inputLink").value.trim();
-      const statusEl = document.getElementById("status");
+    (function () {
+      const AFF_ID = "an_17365830436";
 
-      if (!rawLink) {
-        alert("Vui lòng dán link Shopee gốc");
+      const params = new URLSearchParams(window.location.search);
+      let target = params.get("url");
+
+      if (!target) {
+        document.body.innerHTML = "<h3>Thiếu link Shopee</h3>";
         return;
       }
 
-      if (rawLink.includes("affiliate_id") || rawLink.includes("utm_")) {
-        alert("Chỉ dán link Shopee GỐC");
+      target = decodeURIComponent(target);
+
+      if (!target.includes("shopee.vn")) {
+        document.body.innerHTML = "<h3>Link không hợp lệ</h3>";
         return;
       }
 
-      const affiliateId = "17365830436";
-      const encodedLink = encodeURIComponent(rawLink);
+      const join = target.includes("?") ? "&" : "?";
+      const affLink =
+        target +
+        join +
+        "utm_source=" + AFF_ID +
+        "&utm_medium=affiliates" +
+        "&utm_campaign=share";
 
-      const affiliateLink =
-        "https://shope.ee/redirect?affiliate_id=" +
-        affiliateId +
-        "&url=" +
-        encodedLink;
-
-      statusEl.innerText = "⏳ Đang chuyển hướng sang Shopee...";
-
-      // ⏱ delay 1 giây rồi tự chuyển
-      setTimeout(() => {
-        window.location.href = affiliateLink;
-      }, 1000);
-    }
+      window.location.replace(affLink);
+    })();
   </script>
-
+</head>
+<body>
+  <p>Đang chuyển hướng sang Shopee...</p>
 </body>
 </html>
